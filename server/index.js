@@ -11,16 +11,7 @@ const PORT = process.env.PORT || 4000;
 const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret_change_me';
 
 // ─── Middleware ───────────────────────────────────────────────────────────────
-const allowedOrigins = (process.env.CLIENT_ORIGIN || '').split(',').map(o => o.trim()).filter(Boolean);
-app.use(cors({
-  origin: (origin, cb) => {
-    if (!origin) return cb(null, true); // allow non-browser requests
-    if (!allowedOrigins.length) return cb(null, true); // allow all if not set
-    const allowed = allowedOrigins.some(o => origin === o || origin.endsWith('.vercel.app'));
-    cb(allowed ? null : new Error('Not allowed by CORS'), allowed);
-  },
-  credentials: true,
-}));
+app.use(cors());  // allow all origins (JWT auth, no cookies needed)
 app.use(express.json());
 
 // JWT auth middleware
